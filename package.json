@@ -1,0 +1,49 @@
+{
+  "name": "find-steam-app",
+  "version": "1.0.0",
+  "description": "Find location of an installed Steam app",
+  "keywords": [
+    "app",
+    "appid",
+    "search",
+    "steam",
+    "valve"
+  ],
+  "repository": "https://github.com/ark120202/find-steam-app",
+  "license": "MIT",
+  "author": "ark120202",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "tslint -p .",
+    "prepublishOnly": "yarn build"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "dependencies": {
+    "execa": "^1.0.0",
+    "fs-extra": "^7.0.1",
+    "p-filter": "^1.0.0",
+    "tslib": "^1.9.3",
+    "vdf-extra": "^2.2.2"
+  },
+  "devDependencies": {
+    "@ark120202/tslint-config": "^2.1.1",
+    "@ark120202/typescript-config": "^1.4.2",
+    "@types/execa": "^0.9.0",
+    "@types/fs-extra": "^5.0.4",
+    "prettier": "^1.15.3",
+    "tslint": "^5.12.1",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.2.2",
+    "typescript-tslint-plugin": "^0.2.1"
+  }
+}
