@@ -5,13 +5,13 @@
 ## Usage
 
 ```js
-import {
+const {
   findSteam,
   findSteamAppById,
   findSteamAppByName,
   findSteamAppManifest,
   findSteamLibraries,
-} from 'find-steam-app';
+} = require('find-steam-app');
 
 await findSteamAppById(570);
 // => '/path/to/steam/steamapps/common/dota 2 beta'
