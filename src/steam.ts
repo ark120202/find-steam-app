@@ -24,7 +24,7 @@ async function windows() {
       { cwd: undefined },
     );
     const matches = output.match(/SteamPath\s+[A-Z_]+\s+(.+)/);
-    if (!matches || !matches[1]) throw new Error(`Unexpected output:\n${output.trim()}`);
+    if (!matches || matches[1] === '') throw new Error(`Unexpected output:\n${output.trim()}`);
 
     return pathIfExists(matches[1]);
   } catch (err) {
