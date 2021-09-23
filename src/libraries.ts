@@ -3,9 +3,11 @@ import path from 'path';
 import vdf from 'vdf-extra';
 
 interface LibraryFolders {
-  TimeNextStatsReport: string;
-  ContentStatsID: string;
-  [id: string]: string;
+  [id: string]:
+    | {
+        path: string;
+      }
+    | string;
 }
 
 export async function loadSteamLibraries(steam: string) {
@@ -16,7 +18,9 @@ export async function loadSteamLibraries(steam: string) {
 
   const libraries = Object.entries(libraryFoldersData)
     .filter(([id]) => !isNaN(Number(id)))
-    .map(([, libPath]) => path.join(libPath, 'steamapps'));
+    .map(([, libPath]) =>
+      path.join(typeof libPath === 'string' ? libPath : libPath.path, 'steamapps'),
+    );
 
   return [mainSteamApps, ...libraries];
 }
