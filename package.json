@@ -24,7 +24,7 @@
     "lint:prettier": "prettier --check **/*.{ts,md,yml,json}",
     "fix:prettier": "prettier --write **/*.{ts,md,yml,json}",
     "lint:tslint": "eslint . --ext .ts",
-    "prepublishOnly": "build"
+    "prepublishOnly": "npm run build"
   },
   "prettier": {
     "printWidth": 100,
