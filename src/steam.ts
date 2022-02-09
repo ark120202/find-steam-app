@@ -1,6 +1,7 @@
-import execa from 'execa';
-import fs from 'fs-extra';
-import path from 'path';
+import * as execa from 'execa';
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import * as os from 'os';
 
 const pathIfExists = async (name: string) => ((await fs.pathExists(name)) ? name : undefined);
 const getRegExePath = () =>
@@ -10,13 +11,8 @@ const getRegExePath = () =>
 
 const REG_TREE_PATH = 'HKCU\\Software\\Valve\\Steam';
 const REG_KEY_NOT_FOUND = 'The system was unable to find the specified registry key or value';
-async function windows() {
-  let programFiles = process.env['ProgramFiles(x86)'];
-  if (programFiles == null) programFiles = process.env.ProgramFiles;
-  if (programFiles != null && (await fs.pathExists(`${programFiles}/Steam/Steam.exe`))) {
-    return `${programFiles}/Steam`;
-  }
 
+async function getPathHKCU () {
   try {
     const output = await execa.stdout(
       getRegExePath(),
@@ -34,6 +30,35 @@ async function windows() {
   }
 }
 
+async function windows() {
+  let programFiles = process.env['ProgramFiles(x86)'];
+  if (programFiles == null) programFiles = process.env.ProgramFiles;
+  if (programFiles != null && (await fs.pathExists(`${programFiles}\\Steam\\Steam.exe`))) {
+    return `${programFiles}\\Steam`;
+  }
+
+  return getPathHKCU();
+}
+
+const releaseName = os.release();
+const isWSL = () => process.env.WSL_DISTRO_NAME != null && releaseName.includes('microsoft');
+
+async function wsl (): Promise<string|undefined> {
+  const mountDir = '/mnt';
+  const mountableDrives = fs.readdirSync(mountDir)
+  // NOTE: WSL does not support 32 bit windows systems
+  const steamDir = 'Program Files (x86)/Steam'
+  const defaultPath = `${mountDir}/c/${steamDir}`
+  
+  for (const drive of mountableDrives) {
+    const steamPath = path.join(mountDir, drive, steamDir)
+    if (await fs.pathExists(steamPath) === true) {
+      return steamPath
+    }
+  }
+
+  return pathIfExists(defaultPath)
+}
 /**
  * Searches for Steam.
  *
@@ -44,7 +69,9 @@ export async function findSteam() {
     case 'win32':
       return windows();
     case 'linux':
-      return pathIfExists(`${process.env.HOME}/.local/share/Steam`);
+      return isWSL() === true
+        ? wsl()
+        : pathIfExists(`${process.env.HOME}/.local/share/Steam`);
     case 'darwin':
       return pathIfExists(`${process.env.HOME}/Library/Application Support/Steam`);
     default:
