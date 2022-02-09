@@ -4,7 +4,7 @@ import vdf from 'vdf-extra';
 
 interface FolderDetails {
   path: string
-  label: string,
+  label: string
   contentid: number
   totalsize: number
   update_clean_bytes_tally: number
