@@ -18,7 +18,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build",
     "dev": "tsc --watch",
     "lint": "run-s lint:prettier lint:tslint",
     "lint:prettier": "prettier --check **/*.{ts,md,yml,json}",
@@ -43,6 +43,7 @@
     "@ark120202/typescript-config": "^2.0.0",
     "@types/execa": "^0.9.0",
     "@types/fs-extra": "^5.0.5",
+    "@types/node": "^10.12.18",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.17.0",
     "tslint": "^5.16.0",
